@@ -6,7 +6,7 @@ import { collection, addDoc, serverTimestamp } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { db, storage, isFirebaseConfigured } from "../../lib/firebase";
 import { useAuth } from "../../context/AuthContext";
-import { Star, Upload, Trash2, ArrowLeft, Loader2, Save, Sparkles } from "lucide-react";
+import { Star, Upload, Trash2, ArrowLeft, Loader2, Save, Sparkles, Wine as WineIcon, Calendar } from "lucide-react";
 
 const WINE_TYPES = ["Tinto", "Blanco", "Rosado", "Cava", "Champagne", "Naranja", "Espumoso", "Generoso", "Otro"];
 
@@ -198,39 +198,111 @@ export default function AddWinePage() {
       )}
 
       <form onSubmit={handleSubmit} className="glass" style={{ padding: "24px" }}>
-        {/* Wine Name */}
-        <div className="form-group">
-          <label className="form-label" htmlFor="wine-name">Nombre del Vino *</label>
-          <input
-            id="wine-name"
-            type="text"
-            className="form-input"
-            placeholder="ej. Protos Crianza, Mauro, Vega Sicilia..."
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            required
-            disabled={loading}
-          />
-        </div>
+        {/* Sección 1: El Vino */}
+        <div style={{ marginBottom: "28px", borderBottom: "1px solid rgba(255,255,255,0.08)", paddingBottom: "20px" }}>
+          <h3 style={{ fontSize: "1.15rem", color: "var(--cork-base)", marginBottom: "16px", display: "flex", alignItems: "center", gap: "8px", fontFamily: "var(--font-serif)" }}>
+            <WineIcon size={18} style={{ color: "var(--wine-color)" }} />
+            <span>Detalles del Vino</span>
+          </h3>
 
-        {/* Type & Date */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+          {/* Wine Name */}
           <div className="form-group">
-            <label className="form-label" htmlFor="wine-type">Tipo *</label>
-            <select
-              id="wine-type"
-              className="form-select"
-              value={type}
-              onChange={(e) => setType(e.target.value)}
+            <label className="form-label" htmlFor="wine-name">Nombre del Vino *</label>
+            <input
+              id="wine-name"
+              type="text"
+              className="form-input"
+              placeholder="ej. Protos Crianza, Mauro, Vega Sicilia..."
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              required
               disabled={loading}
-            >
-              {WINE_TYPES.map((t) => (
-                <option key={t} value={t}>{t}</option>
-              ))}
-            </select>
+            />
           </div>
 
+          {/* Type & Bodega */}
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+            <div className="form-group">
+              <label className="form-label" htmlFor="wine-type">Tipo *</label>
+              <select
+                id="wine-type"
+                className="form-select"
+                value={type}
+                onChange={(e) => setType(e.target.value)}
+                disabled={loading}
+              >
+                {WINE_TYPES.map((t) => (
+                  <option key={t} value={t}>{t}</option>
+                ))}
+              </select>
+            </div>
+
+            <div className="form-group">
+              <label className="form-label" htmlFor="wine-winery">Bodega / D.O.</label>
+              <input
+                id="wine-winery"
+                type="text"
+                className="form-input"
+                placeholder="ej. Ribera del Duero"
+                value={winery}
+                onChange={(e) => setWinery(e.target.value)}
+                disabled={loading}
+              />
+            </div>
+          </div>
+
+          {/* Grapes */}
+          <div className="form-group" style={{ marginBottom: 0 }}>
+            <label className="form-label" htmlFor="wine-grapes">Variedad de Uva(s)</label>
+            <input
+              id="wine-grapes"
+              type="text"
+              className="form-input"
+              placeholder="ej. Tempranillo, Verdejo..."
+              value={grapes}
+              onChange={(e) => setGrapes(e.target.value)}
+              disabled={loading}
+            />
+          </div>
+        </div>
+
+        {/* Sección 2: El Momento */}
+        <div style={{ marginBottom: "28px", borderBottom: "1px solid rgba(255,255,255,0.08)", paddingBottom: "20px" }}>
+          <h3 style={{ fontSize: "1.15rem", color: "var(--cork-base)", marginBottom: "16px", display: "flex", alignItems: "center", gap: "8px", fontFamily: "var(--font-serif)" }}>
+            <Calendar size={18} style={{ color: "var(--wine-color)" }} />
+            <span>El Momento y Lugar</span>
+          </h3>
+
+          {/* Rinconcito (Fila separada) */}
           <div className="form-group">
+            <label className="form-label" htmlFor="wine-restaurant">Rinconcito</label>
+            <input
+              id="wine-restaurant"
+              type="text"
+              className="form-input"
+              placeholder="ej. El Celler de Can Roca, terraza de casa..."
+              value={restaurant}
+              onChange={(e) => setRestaurant(e.target.value)}
+              disabled={loading}
+            />
+          </div>
+
+          {/* Evento (Fila separada) */}
+          <div className="form-group">
+            <label className="form-label" htmlFor="wine-event">Evento / Contexto</label>
+            <input
+              id="wine-event"
+              type="text"
+              className="form-input"
+              placeholder="ej. Cumpleaños, cena de Navidad..."
+              value={event}
+              onChange={(e) => setEvent(e.target.value)}
+              disabled={loading}
+            />
+          </div>
+
+          {/* Fecha */}
+          <div className="form-group" style={{ marginBottom: 0 }}>
             <label className="form-label" htmlFor="wine-date">Fecha *</label>
             <input
               id="wine-date"
@@ -244,150 +316,100 @@ export default function AddWinePage() {
           </div>
         </div>
 
-        {/* Winery/D.O. & Restaurant */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+        {/* Sección 3: Valoración y Recuerdos */}
+        <div>
+          <h3 style={{ fontSize: "1.15rem", color: "var(--cork-base)", marginBottom: "16px", display: "flex", alignItems: "center", gap: "8px", fontFamily: "var(--font-serif)" }}>
+            <Star size={18} style={{ color: "var(--wine-color)" }} />
+            <span>Valoración y Fotos</span>
+          </h3>
+
+          {/* Rating (Stars) */}
           <div className="form-group">
-            <label className="form-label" htmlFor="wine-winery">Bodega / D.O.</label>
-            <input
-              id="wine-winery"
-              type="text"
-              className="form-input"
-              placeholder="ej. Ribera del Duero"
-              value={winery}
-              onChange={(e) => setWinery(e.target.value)}
-              disabled={loading}
-            />
-          </div>
-
-          <div className="form-group">
-            <label className="form-label" htmlFor="wine-restaurant">Rinconcito</label>
-            <input
-              id="wine-restaurant"
-              type="text"
-              className="form-input"
-              placeholder="ej. El Celler de Can Roca, terraza de casa..."
-              value={restaurant}
-              onChange={(e) => setRestaurant(e.target.value)}
-              disabled={loading}
-            />
-          </div>
-        </div>
-
-        {/* Grapes & Event */}
-        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
-          <div className="form-group">
-            <label className="form-label" htmlFor="wine-grapes">Variedad de Uva(s)</label>
-            <input
-              id="wine-grapes"
-              type="text"
-              className="form-input"
-              placeholder="ej. Tempranillo, Verdejo..."
-              value={grapes}
-              onChange={(e) => setGrapes(e.target.value)}
-              disabled={loading}
-            />
-          </div>
-
-          <div className="form-group">
-            <label className="form-label" htmlFor="wine-event">Evento / Contexto</label>
-            <input
-              id="wine-event"
-              type="text"
-              className="form-input"
-              placeholder="ej. Cumpleaños, cena de Navidad..."
-              value={event}
-              onChange={(e) => setEvent(e.target.value)}
-              disabled={loading}
-            />
-          </div>
-        </div>
-
-        {/* Rating (Stars) */}
-        <div className="form-group">
-          <label className="form-label">Puntuación</label>
-          <div className="star-rating">
-            {Array.from({ length: 5 }).map((_, i) => {
-              const starValue = i + 1;
-              return (
-                <button
-                  key={i}
-                  type="button"
-                  className="star-btn"
-                  onClick={() => setRating(starValue)}
-                  disabled={loading}
-                  aria-label={`Calificar con ${starValue} estrellas`}
-                >
-                  <Star
-                    size={28}
-                    fill={starValue <= rating ? "var(--star-color)" : "transparent"}
-                    color={starValue <= rating ? "var(--star-color)" : "rgba(255,255,255,0.2)"}
-                  />
-                </button>
-              );
-            })}
-          </div>
-        </div>
-
-        {/* Notes */}
-        <div className="form-group">
-          <label className="form-label" htmlFor="wine-notes">Notas Personales</label>
-          <textarea
-            id="wine-notes"
-            className="form-textarea"
-            placeholder="Aroma, sabor, maridaje, anécdotas de la velada..."
-            value={notes}
-            onChange={(e) => setNotes(e.target.value)}
-            disabled={loading}
-          />
-        </div>
-
-        {/* Image Upload */}
-        <div className="form-group">
-          <label className="form-label">Fotos de la Botella (Etiqueta delantera/trasera)</label>
-          <input
-            type="file"
-            accept="image/*"
-            multiple
-            style={{ display: "none" }}
-            ref={fileInputRef}
-            onChange={handleImagesChange}
-            disabled={loading}
-          />
-          
-          <div 
-            className="image-upload-wrapper"
-            onClick={() => fileInputRef.current?.click()}
-            style={{ marginBottom: "16px" }}
-          >
-            <Upload size={32} style={{ color: "var(--cork-base)", marginBottom: "8px" }} />
-            <p style={{ fontSize: "0.9rem", fontWeight: 500, color: "var(--cork-light)" }}>
-              Hacer foto o seleccionar archivos
-            </p>
-            <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "4px" }}>
-              Puedes subir varias imágenes (ej. etiqueta de delante y de detrás)
-            </p>
-          </div>
-
-          {imagePreviews.length > 0 && (
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(90px, 1fr))", gap: "12px" }}>
-              {imagePreviews.map((preview, index) => (
-                <div key={index} className="image-preview" style={{ width: "100%", height: "100px", position: "relative", margin: 0 }}>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={preview} alt={`Foto ${index + 1}`} style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "8px" }} />
-                  <button 
-                    type="button" 
-                    className="remove-image-btn"
-                    onClick={(e) => removeImage(index, e)}
+            <label className="form-label">Puntuación</label>
+            <div className="star-rating">
+              {Array.from({ length: 5 }).map((_, i) => {
+                const starValue = i + 1;
+                return (
+                  <button
+                    key={i}
+                    type="button"
+                    className="star-btn"
+                    onClick={() => setRating(starValue)}
                     disabled={loading}
-                    aria-label="Quitar imagen"
-                    style={{ position: "absolute", top: "4px", right: "4px", width: "24px", height: "24px", padding: 0, display: "flex", alignItems: "center", justifyContent: "center" }}
+                    aria-label={`Calificar con ${starValue} estrellas`}
                   >
-                    <Trash2 size={12} />
+                    <Star
+                      size={28}
+                      fill={starValue <= rating ? "var(--star-color)" : "transparent"}
+                      color={starValue <= rating ? "var(--star-color)" : "rgba(255,255,255,0.2)"}
+                    />
                   </button>
-                </div>
-              ))}
+                );
+              })}
             </div>
-          )}
+          </div>
+
+          {/* Notes */}
+          <div className="form-group">
+            <label className="form-label" htmlFor="wine-notes">Notas Personales</label>
+            <textarea
+              id="wine-notes"
+              className="form-textarea"
+              placeholder="Aroma, sabor, maridaje, anécdotas de la velada..."
+              value={notes}
+              onChange={(e) => setNotes(e.target.value)}
+              disabled={loading}
+            />
+          </div>
+
+          {/* Image Upload */}
+          <div className="form-group">
+            <label className="form-label">Fotos de la Botella (Etiqueta delantera/trasera)</label>
+            <input
+              type="file"
+              accept="image/*"
+              multiple
+              style={{ display: "none" }}
+              ref={fileInputRef}
+              onChange={handleImagesChange}
+              disabled={loading}
+            />
+            
+            <div 
+              className="image-upload-wrapper"
+              onClick={() => fileInputRef.current?.click()}
+              style={{ marginBottom: "16px" }}
+            >
+              <Upload size={32} style={{ color: "var(--cork-base)", marginBottom: "8px" }} />
+              <p style={{ fontSize: "0.9rem", fontWeight: 500, color: "var(--cork-light)" }}>
+                Hacer foto o seleccionar archivos
+              </p>
+              <p style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "4px" }}>
+                Puedes subir varias imágenes (ej. etiqueta de delante y de detrás)
+              </p>
+            </div>
+
+            {imagePreviews.length > 0 && (
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(90px, 1fr))", gap: "12px" }}>
+                {imagePreviews.map((preview, index) => (
+                  <div key={index} className="image-preview" style={{ width: "100%", height: "100px", position: "relative", margin: 0 }}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={preview} alt={`Foto ${index + 1}`} style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "8px" }} />
+                    <button 
+                      type="button" 
+                      className="remove-image-btn"
+                      onClick={(e) => removeImage(index, e)}
+                      disabled={loading}
+                      aria-label="Quitar imagen"
+                      style={{ position: "absolute", top: "4px", right: "4px", width: "24px", height: "24px", padding: 0, display: "flex", alignItems: "center", justifyContent: "center" }}
+                    >
+                      <Trash2 size={12} />
+                    </button>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
 
         {/* Submit */}
