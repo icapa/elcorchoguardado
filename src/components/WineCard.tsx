@@ -13,6 +13,7 @@ interface WineCardProps {
     date: string;
     notes: string;
     imageUrl?: string;
+    event?: string;
   };
   onClick: () => void;
 }

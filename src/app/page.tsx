@@ -21,6 +21,7 @@ interface Wine {
   imagePath?: string;
   imageUrls?: string[];
   imagePaths?: string[];
+  event?: string;
 }
 
 const WINE_TYPES = ["Todos", "Tinto", "Blanco", "Rosado", "Cava", "Champagne", "Naranja", "Otro"];
@@ -86,7 +87,8 @@ export default function ShowcasePage() {
           wine.winery.toLowerCase().includes(searchLower) ||
           wine.restaurant.toLowerCase().includes(searchLower) ||
           (wine.grapes && wine.grapes.toLowerCase().includes(searchLower)) ||
-          (wine.notes && wine.notes.toLowerCase().includes(searchLower))
+          (wine.notes && wine.notes.toLowerCase().includes(searchLower)) ||
+          (wine.event && wine.event.toLowerCase().includes(searchLower))
       );
     }
 
@@ -165,7 +167,7 @@ export default function ShowcasePage() {
               <Search size={18} />
               <input
                 type="text"
-                placeholder="Buscar vino, bodega, restaurante o nota..."
+                placeholder="Buscar vino, bodega, rinconcito, evento..."
                 className="form-input"
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
@@ -224,7 +226,7 @@ export default function ShowcasePage() {
               <p className="empty-state-desc">
                 {search || selectedType !== "Todos"
                   ? "Ningún vino coincide con los filtros aplicados actualmente."
-                  : "Aún no habéis registrado ningún vino. ¡Id a un restaurante y descorchad una botella!"}
+                  : "Aún no habéis registrado ningún vino. ¡Id a algún rinconcito y descorchad una botella!"}
               </p>
               {!search && selectedType === "Todos" && (
                 <div style={{ display: "flex", alignItems: "center", gap: "6px", color: "var(--cork-base)", fontSize: "0.85rem", fontStyle: "italic" }}>

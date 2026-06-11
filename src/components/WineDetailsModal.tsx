@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { X, Calendar, MapPin, Award, Tag, Trash2, Loader2, Wine as WineIcon } from "lucide-react";
+import { X, Calendar, MapPin, Award, Tag, Trash2, Loader2, Wine as WineIcon, Sparkles } from "lucide-react";
 import { doc, deleteDoc } from "firebase/firestore";
 import { ref, deleteObject } from "firebase/storage";
 import { db, storage } from "../lib/firebase";
@@ -22,6 +22,7 @@ interface WineDetailsModalProps {
     imagePath?: string;
     imageUrls?: string[];
     imagePaths?: string[];
+    event?: string;
   };
   onClose: () => void;
   onDeleted: () => void;
@@ -164,7 +165,7 @@ export default function WineDetailsModal({ wine, onClose, onDeleted }: WineDetai
           <div className="modal-meta-item">
             <span className="modal-meta-label">
               <MapPin size={12} style={{ display: "inline", marginRight: "4px" }} />
-              Restaurante
+              Rinconcito
             </span>
             <span className="modal-meta-value">{wine.restaurant}</span>
           </div>
@@ -176,6 +177,16 @@ export default function WineDetailsModal({ wine, onClose, onDeleted }: WineDetai
             </span>
             <span className="modal-meta-value">{formatDate(wine.date)}</span>
           </div>
+
+          {wine.event && (
+            <div className="modal-meta-item" style={{ gridColumn: "span 2" }}>
+              <span className="modal-meta-label">
+                <Sparkles size={12} style={{ display: "inline", marginRight: "4px" }} />
+                Evento
+              </span>
+              <span className="modal-meta-value">{wine.event}</span>
+            </div>
+          )}
         </div>
 
         {/* Grapes */}

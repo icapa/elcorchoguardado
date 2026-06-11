@@ -20,6 +20,7 @@ export default function AddWinePage() {
   const [type, setType] = useState("Tinto");
   const [winery, setWinery] = useState("");
   const [restaurant, setRestaurant] = useState("");
+  const [event, setEvent] = useState("");
   const [grapes, setGrapes] = useState("");
   const [rating, setRating] = useState(5);
   const [date, setDate] = useState("");
@@ -99,7 +100,8 @@ export default function AddWinePage() {
         name,
         type,
         winery: winery || "Sin Bodega/D.O.",
-        restaurant: restaurant || "Sin Restaurante",
+        restaurant: restaurant || "Sin Rinconcito",
+        event: event || "",
         grapes: grapes || "Sin especificar",
         rating,
         date,
@@ -122,6 +124,7 @@ export default function AddWinePage() {
       setType("Tinto");
       setWinery("");
       setRestaurant("");
+      setEvent("");
       setGrapes("");
       setRating(5);
       setNotes("");
@@ -257,12 +260,12 @@ export default function AddWinePage() {
           </div>
 
           <div className="form-group">
-            <label className="form-label" htmlFor="wine-restaurant">Restaurante</label>
+            <label className="form-label" htmlFor="wine-restaurant">Rinconcito</label>
             <input
               id="wine-restaurant"
               type="text"
               className="form-input"
-              placeholder="ej. El Celler de Can Roca"
+              placeholder="ej. El Celler de Can Roca, terraza de casa..."
               value={restaurant}
               onChange={(e) => setRestaurant(e.target.value)}
               disabled={loading}
@@ -270,18 +273,33 @@ export default function AddWinePage() {
           </div>
         </div>
 
-        {/* Grapes */}
-        <div className="form-group">
-          <label className="form-label" htmlFor="wine-grapes">Variedad de Uva(s)</label>
-          <input
-            id="wine-grapes"
-            type="text"
-            className="form-input"
-            placeholder="ej. Tempranillo, Garnacha, Cabernet Sauvignon, Verdejo..."
-            value={grapes}
-            onChange={(e) => setGrapes(e.target.value)}
-            disabled={loading}
-          />
+        {/* Grapes & Event */}
+        <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+          <div className="form-group">
+            <label className="form-label" htmlFor="wine-grapes">Variedad de Uva(s)</label>
+            <input
+              id="wine-grapes"
+              type="text"
+              className="form-input"
+              placeholder="ej. Tempranillo, Verdejo..."
+              value={grapes}
+              onChange={(e) => setGrapes(e.target.value)}
+              disabled={loading}
+            />
+          </div>
+
+          <div className="form-group">
+            <label className="form-label" htmlFor="wine-event">Evento / Contexto</label>
+            <input
+              id="wine-event"
+              type="text"
+              className="form-input"
+              placeholder="ej. Cumpleaños, cena de Navidad..."
+              value={event}
+              onChange={(e) => setEvent(e.target.value)}
+              disabled={loading}
+            />
+          </div>
         </div>
 
         {/* Rating (Stars) */}

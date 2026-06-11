@@ -72,8 +72,9 @@ interface Wine {
   name: string;        // Nombre del vino (obligatorio)
   type: string;        // Tipo: 'Tinto', 'Blanco', 'Rosado', 'Cava', 'Champagne', 'Naranja', 'Otro'
   winery: string;      // Bodega o Denominación de Origen
-  restaurant: string;  // Restaurante donde se probó
+  restaurant: string;  // Rinconcito/Restaurante donde se probó
   grapes?: string;     // Variedades de uva descritas
+  event?: string;      // Evento o contexto en el que se tomó
   rating: number;      // Puntuación de 1 a 5 estrellas
   date: string;        // Fecha en formato YYYY-MM-DD
   notes: string;       // Comentarios personales
